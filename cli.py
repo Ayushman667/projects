@@ -5,13 +5,12 @@ def clear_screen():
 
 
 def add_expense():
-    expense = input("Enter your expense: ")
     category = input("Enter the category of your expense: ")
     amount = float(input("Enter the amount of your expense: "))
-    date = input("Enter the date of your expense (YYYY-MM-DD): ")
+    date = input("Enter the date of your expense (DD-MM): ")
 
     with open("projects/expenses.txt", "a") as file:
-        file.write(f"{expense},{category},{amount},{date}\n")
+        file.write(f"{category},{amount},{date}\n")
 
     flag = True
     while flag:
@@ -37,7 +36,7 @@ def view_expense():
 
     for expense in expenses:
         expense_details = expense.strip().split(",")
-        print(f"Expense: {expense_details[0]}, Category: {expense_details[1]}, Amount: {expense_details[2]}, Date: {expense_details[3]}")
+        print(f"Category: {expense_details[0]}, Amount: {expense_details[1]}, Date: {expense_details[2]}")
 
     flag = True
     while flag:
@@ -60,13 +59,13 @@ def search_expense():
 
     for expense in found_expenses:
         expense_details = expense.strip().split(",")
-        print(f"Expense: {expense_details[0]}, Category: {expense_details[1]}, Amount: {expense_details[2]}, Date: {expense_details[3]}")
+        print(f"Category: {expense_details[0]}, Amount: {expense_details[1]}, Date: {expense_details[2]}")
 
 def show_total_spending():
     with open("projects/expenses.txt", "r") as file:
         expenses = file.readlines()
 
-    total_spending = sum(float(expense.strip().split(",")[2]) for expense in expenses)
+    total_spending = sum(float(expense.strip().split(",")[1]) for expense in expenses)
     print(f"Total spending: {total_spending}")
 
 def show_spending_by_category():
@@ -76,8 +75,8 @@ def show_spending_by_category():
     category_spending = {}
     for expense in expenses:
         expense_details = expense.strip().split(",")
-        category = expense_details[1]
-        amount = float(expense_details[2])
+        category = expense_details[0]
+        amount = float(expense_details[1])
         if category in category_spending:
             category_spending[category] += amount
         else:
